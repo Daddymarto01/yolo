@@ -1,69 +1,65 @@
-#This file builds the Docker images for a React/NodeJS application and runs it as microservices on Docker containers
+# Docker Compose setup for the Yolo React/NodeJS application
+# Builds the client (React), backend (Node/Express), and MongoDB as microservices.
 
-#To ensure successful execution, clone this entire repository and execute this file while in the root folder of the cloned repository
-
-#It's also a requirement to have Docker and the docker-compose plugin installed in your environment
-
-#To launch this app without having to clone the entire repository,use the docker-compose.yaml file to run the app
-
-version: "3.8"
+# Prerequisites:
+#  - Docker and Docker Compose installed
+#  - Run this file from the root folder of the cloned repository
 
 services:
 
-  #Builds the frontend Docker image and creates the frontend microservice
-  brian-yolo-client:
-    image: brianbwire/brian-yolo-client:v1.0.0
+  # Frontend service (React)
+  martin-yolo-client:
+    image: martinodongo/martin-yolo-client:v1.0.0
     build: ./client
-    container_name: brian-yolo-client
+    container_name: martin-yolo-client
     stdin_open: true
     tty: true
     ports:
       - "3000:3000"
-    depends_on: 
-      - brian-yolo-backend
+    depends_on:
+      - martin-yolo-backend
     networks:
       - app-net
 
-  #Builds the backend Docker image and creates the backend microservice
-  brian-yolo-backend:
-    image: brianbwire/brian-yolo-backend:v1.0.0
+  # Backend service (Node/Express)
+  martin-yolo-backend:
+    image: martinodongo/martin-yolo-backend:v1.0.0
     build: ./backend
-    container_name: brian-yolo-backend
+    container_name: martin-yolo-backend
     stdin_open: true
     tty: true
     restart: always
     ports:
       - "5000:5000"
-    depends_on: 
-      - app-ip-mongo
+    depends_on:
+      - app-mongo
+    environment:
+      # Use the Mongo container name for networking, NOT localhost
+      - MONGO_URI=mongodb://app-mongo:27017/mydb
     networks:
       - app-net
 
-  #Creates the database microservice
-  app-ip-mongo:
-    image: mongo
+  # MongoDB database service
+  app-mongo:
+    image: mongo:latest
     container_name: app-mongo
+    restart: always
     ports:
       - "27017:27017"
     networks:
       - app-net
     volumes:
-      - type: volume
-        source: app-mongo-data
-        target: /data/db
+      - app-mongo-data:/data/db
 
-#Creates the network infrastructure necessary for the containers to communicate with each other
+# Shared Docker network for internal service communication
 networks:
   app-net:
-    name: app-net
     driver: bridge
     attachable: true
-    ipam:
-      config:
-        - subnet: 172.20.0.0/16 
-          ip_range: 172.20.0.0/16 
+    # Removed static IP/subnet to avoid overlap errors
+    # Docker will handle IP assignment automatically
 
-#Creates a Docker volume that persists all the data stored in the database
+# Persistent MongoDB data storage
 volumes:
   app-mongo-data:
     driver: local
