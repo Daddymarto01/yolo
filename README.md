@@ -61,11 +61,40 @@ Confirm the version on docker compose.
 - The result will be as show below.
 ![alt text](image-6.png)
 
-# Confirm that the application is up and running.
+## Confirm that the application is up and running.
 - Follow the link shown above http://localhost:3000 to launch the application. 
 
 ![alt text](image-7.png)
 
 The above screen is a confirmation that application is running as expected. 
-## How to run the app
-Use vagrant up --provison command
+## Check and confirm that the containers are running and that the database (mongo db) is pulled.
+- Run command docker ps to list the containers that are running a 
+![alt text](image-8.png)
+- The resuls are as show above.
+
+## Volumes and Networks: Listing and Inspecting
+### Network
+Networks enable comms (same network for hostname resolution). List: docker network ls. Inspect: docker network inspect yolo-net (IPs, containers). We use same network for backend to reach mongo.
+If logged in as sudo, you could list netwoks by running docker network ls command. If not, add the word sudo at the begining as shown below. 
+
+![alt text](image-9.png)
+
+This shows the networks available and yolo_app_net is our network.
+- Copy the Network ID and run sudo docker network inspect to show details on the container network configuration. 
+
+![alt text](image-10.png)
+The results will be as shown above.
+
+### Volumes
+Volumes persist data. List: docker volume ls. Inspect: docker volume inspect yolo_app-mongo-data (mountpoint: /var/lib/docker/volumes/app-mongo-data/_data).
+- Run docker volume ls or sudo docker volume ls to confirm our volume. 
+
+![alt text](image-11.png)
+
+Image above shows yolo_app-mondo-data as our volume. 
+
+- To inspect our volume, copy the volume name and run sudo docker volume inspect yolo_app-mongo-data.
+
+![alt text](image-12.png)
+
+Image above shows volume inspection.
