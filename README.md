@@ -115,3 +115,30 @@ From the running portal(frontend) which is running on http://localhost:3000 , Ad
   ![alt text](image-14.png)
 
   Docker images should be less than 200MB 
+
+  ## DockerHub Image Link
+
+  https://hub.docker.com/repositories/daddymarto
+
+  Back End: daddymarto/martin-yolo-backend:v1.0.0
+  Front End: daddymarto/martin-yolo-client:v1.0.0
+
+  ![alt text](image-15.png)
+
+  # Modifying to Pull from Docker Hub Instead of Building Locally
+
+After you have pushed your image to docker hub, you can use remote images from docker hub instead of local ones
+To use remote images: Remove build: sections in docker-compose.yml, keep image:. It pulls from Hub.
+
+E.G 
+services:
+  martin-yolo-client:
+    image: daddymarto/martin-yolo-client:v1.0.0  # Pulls from Hub
+    # No build:
+    # ... rest
+
+    martin-yolo-backend:
+    image: daddymarto/martin-yolo-backend:v1.0.0  # Pulls from Hub
+    # No build:
+    # ... rest
+ 
