@@ -1,28 +1,32 @@
-# Use an official Node runtime as a parent image
+# ---- BUILD STAGE ----
 FROM node:20-alpine AS build
 
-# Set the working directory in the container
 WORKDIR /usr/src/app
-
-# Copy the package.json and package-lock.json files to the container
 COPY package*.json ./
 
-# Install application dependencies
-RUN npm install
+# Install dependencies
+RUN npm ci
 
-# Copy the rest of the application code to the container
+# Copy app source
 COPY . .
 
-FROM alpine:3.16.7
+# Fix OpenSSL issue (Node 17+)
+ENV NODE_OPTIONS=--openssl-legacy-provider
 
-WORKDIR /app
+# Build static production files
+RUN npm run build
 
-RUN apk update && apk add npm
+# ---- RUNTIME STAGE ----
+FROM nginx:alpine
 
-COPY --from=build /usr/src/app /app
+# Remove default nginx static assets
+RUN rm -rf /usr/share/nginx/html/*
 
-# Expose the port the app runs on
-EXPOSE 3000
+# Copy built React app from build stage
+COPY --from=build /usr/src/app/build /usr/share/nginx/html
 
-# Define the command to run your app
-CMD ["npm", "start"]
+# Expose port 80 for Nginx
+EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]

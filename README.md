@@ -31,7 +31,7 @@ Confirm the version on docker compose.
 - Clean structure for both client & server, enabling independent development and CI/CD readiness  
 
 ## 📁 Repository Structure  
-/
+
 ├── .vscode/ # VS Code settings
 ├── backend/ # Backend application code
 ├── client/ # Frontend application code
@@ -47,9 +47,11 @@ Confirm the version on docker compose.
 ├── .dockerignore # Docker ignore file
 ├── .gitignore # Git ignore file
 └── README.md # This file
+
 ## How to launch the application 
  - Check if any docker containers are running by running docker ps and docker ps -a to check previously launched but stopped containers.
-![alt text](image-3.png)\
+![alt text](image-3.png)
+
  - Stop any unnecessary containers and then check again by running docker ps
 
 ![alt text](image-4.png)
@@ -98,3 +100,18 @@ Image above shows yolo_app-mondo-data as our volume.
 ![alt text](image-12.png)
 
 Image above shows volume inspection.
+
+## Check Application and Persistence.
+
+From the running portal(frontend) which is running on http://localhost:3000 , Add a test product. 
+
+ ![alt text](image-13.png)
+
+ ## Reduce Docker Image size
+  - Build your images from node:20-alpine to reduce image size.
+  - Remove unnecesary files to reduce image size. 
+  - Update the .dockerignore file to add any unwanted files from being tagged to the docker. 
+
+  ![alt text](image-14.png)
+
+  Docker images should be less than 200MB 

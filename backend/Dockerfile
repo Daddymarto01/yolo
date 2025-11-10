@@ -1,25 +1,23 @@
-# Use an official Node runtime as a parent image
+# ---- BUILD STAGE ----
 FROM node:20-alpine AS build
 
-# Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Copy the package.json and package-lock.json files to the container
+# Copy only package files first (better caching)
 COPY package*.json ./
 
-# Install application dependencies
-RUN npm install
+# Install only production dependencies
+RUN npm ci --only=production
 
-# Copy the rest of the application code to the container
+# Copy application source code
 COPY . .
 
-#Add multi-stage build
-FROM alpine:3.16.7
+# ---- RUNTIME STAGE ----
+FROM node:20-alpine
 
 WORKDIR /app
 
-RUN apk update && apk add --update nodejs
-
+# Copy only the built app and node_modules
 COPY --from=build /usr/src/app /app
 
 # Expose the port the app runs on
