@@ -43,9 +43,7 @@ Install the docker engine here:
 ├── .gitignore # Git ignore file
 └── README.md # This file
 ## How to launch the application 
-
-
-![Alt text](image.png)
+ 
 
 ## How to run the app
 Use vagrant up --provison command
