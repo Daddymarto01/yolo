@@ -12,6 +12,11 @@ Install the docker engine here:
 - Verify installation:from terminal Run docker version (checks Engine/CLI) and docker compose version (checks Compose).
 
 ![alt text](image-1.png)
+
+Confirm the version on docker compose.
+- Run docker compose version
+
+![alt text](image-2.png)
 # Key Features
 
 - Frontend: Built with HTML, CSS and JavaScript (SPA or dynamic UI)  
@@ -43,7 +48,24 @@ Install the docker engine here:
 ├── .gitignore # Git ignore file
 └── README.md # This file
 ## How to launch the application 
- 
+ - Check if any docker containers are running by running docker ps and docker ps -a to check previously launched but stopped containers.
+![alt text](image-3.png)\
+ - Stop any unnecessary containers and then check again by running docker ps
 
+![alt text](image-4.png)
+
+- Now build your application by running command docker compose build on your terminal. This will install all dependancies including updating nuget package manager.
+- Note, faster internet speeds up the building of the project.
+![alt text](image-5.png)
+- Launch application by running command docker compose up.
+- The result will be as show below.
+![alt text](image-6.png)
+
+# Confirm that the application is up and running.
+- Follow the link shown above http://localhost:3000 to launch the application. 
+
+![alt text](image-7.png)
+
+The above screen is a confirmation that application is running as expected. 
 ## How to run the app
 Use vagrant up --provison command
